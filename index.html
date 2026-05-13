@@ -104,6 +104,26 @@
     margin-bottom: 2.5rem;
   }
   .hero-ctas { display: flex; gap: 0.8rem; flex-wrap: wrap; justify-content: center; }
+  .hero-profiles {
+    display: flex; gap: 1.2rem; flex-wrap: wrap; justify-content: center;
+    margin-top: 2rem; padding-top: 2rem;
+    border-top: 1px solid rgba(255,255,255,0.1);
+  }
+  .hero-profile-link {
+    display: inline-flex; align-items: center; gap: 0.55rem;
+    text-decoration: none; color: rgba(255,255,255,0.55);
+    font-size: 0.82rem; font-weight: 300;
+    transition: color 0.2s;
+  }
+  .hero-profile-link:hover { color: rgba(255,255,255,0.88); }
+  .hero-profile-icon {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 28px; height: 28px; flex-shrink: 0;
+    background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.15);
+    font-family: 'Inconsolata', monospace;
+    font-size: 0.6rem; font-weight: 500; letter-spacing: 0.04em;
+    color: rgba(255,255,255,0.5);
+  }
   .btn-primary {
     display: inline-flex; align-items: center;
     background: var(--accent); color: #fff;
@@ -409,6 +429,20 @@
       <a href="#publications" class="btn-primary">Publications →</a>
       <a href="assets/CV_QuezadaFranco.pdf" class="btn-outline" target="_blank">Download CV</a>
       <a href="#contact" class="btn-outline">Contact</a>
+    </div>
+    <div class="hero-profiles">
+      <a href="https://scholar.google.com/citations?user=JKsCIcsAAAAJ&hl=es" target="_blank" class="hero-profile-link">
+        <span class="hero-profile-icon">G</span>
+        <span>Google Scholar</span>
+      </a>
+      <a href="https://orcid.org/0000-0001-5763-5582" target="_blank" class="hero-profile-link">
+        <span class="hero-profile-icon">ID</span>
+        <span>ORCID</span>
+      </a>
+      <a href="https://dblp.org/pid/172/7807.html" target="_blank" class="hero-profile-link">
+        <span class="hero-profile-icon">DB</span>
+        <span>DBLP</span>
+      </a>
     </div>
   </div>
   <div class="hero-photo">
