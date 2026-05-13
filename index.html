@@ -68,8 +68,8 @@
   }
   .hero-photo { display: none; }
   .hero-text {
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
-    text-align: center;
+    display: flex; flex-direction: column; align-items: flex-start; justify-content: center;
+    text-align: left;
     padding: 7.5rem 2rem 5rem;
     max-width: 820px;
   }
@@ -80,9 +80,9 @@
   }
   h1.hero-name {
     font-family: 'EB Garamond', serif;
-    font-size: clamp(3.2rem, 6vw, 5.2rem);
+    font-size: clamp(2.4rem, 3.8vw, 3.6rem);
     font-weight: 500; color: #fff;
-    line-height: 1.15; letter-spacing: 0.01em;
+    line-height: 1.2; letter-spacing: 0.01em;
     margin-bottom: 0.9rem;
   }
   .hero-title {
@@ -96,16 +96,16 @@
   }
   .hero-divider {
     width: 32px; height: 1px;
-    background: rgba(255,255,255,0.22); margin: 0 auto 2rem;
+    background: rgba(255,255,255,0.22); margin: 0 0 2rem;
   }
   .hero-bio {
     font-size: 1.05rem; color: rgba(255,255,255,0.72);
     max-width: 620px; line-height: 1.9; font-weight: 300;
     margin-bottom: 2.5rem;
   }
-  .hero-ctas { display: flex; gap: 0.8rem; flex-wrap: wrap; justify-content: center; }
+  .hero-ctas { display: flex; gap: 0.8rem; flex-wrap: wrap; justify-content: flex-start; }
   .hero-profiles {
-    display: flex; gap: 1.2rem; flex-wrap: wrap; justify-content: center;
+    display: flex; gap: 1.2rem; flex-wrap: wrap; justify-content: flex-start;
     margin-top: 2rem; padding-top: 2rem;
     border-top: 1px solid rgba(255,255,255,0.1);
   }
