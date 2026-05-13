@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Franco Quezada | Operations Research & Stochastic Programming</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Lato:wght@300;400;700&family=Inconsolata:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --slate:       #1c2b3a;
+    --slate-mid:   #253545;
+    --accent:      #2e6b8a;
+    --accent-dim:  #4a87a4;
+    --sage:        #4d6b5a;
+    --off-white:   #f7f6f3;
+    --cream:       #eeebe5;
+    --white:       #ffffff;
+    --text:        #1e2530;
+    --text-muted:  #52596a;
+    --text-light:  #8a9098;
+    --border:      #d8d4cc;
+    --border-dark: #b8b4ac;
+    --section-pad: 5rem 0;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Lato', sans-serif;
+    background: var(--off-white);
+    color: var(--text);
+    font-size: 16px;
+    line-height: 1.75;
+    overflow-x: hidden;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(28, 43, 58, 0.97);
+    backdrop-filter: blur(6px);
+    padding: 0 2.5rem;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 56px;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+  }
+  .nav-brand {
+    font-family: 'EB Garamond', serif;
+    font-size: 1.08rem; font-weight: 400;
+    color: rgba(255,255,255,0.85);
+    text-decoration: none; letter-spacing: 0.01em;
+  }
+  .nav-links { display: flex; gap: 2.25rem; list-style: none; }
+  .nav-links a {
+    color: rgba(255,255,255,0.5);
+    text-decoration: none;
+    font-size: 0.76rem; letter-spacing: 0.07em; text-transform: uppercase;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: rgba(255,255,255,0.88); }
+
+  /* HERO */
+  .hero {
+    background: var(--slate);
+    min-height: 100vh;
+    display: grid; grid-template-columns: 1.1fr 0.9fr;
+    overflow: hidden;
+  }
+  .hero-text {
+    display: flex; flex-direction: column; justify-content: center;
+    padding: 7.5rem 3.5rem 5rem 4.5rem;
+  }
+  .hero-eyebrow {
+    font-family: 'Inconsolata', monospace;
+    font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--accent-dim); margin-bottom: 1.5rem;
+  }
+  h1.hero-name {
+    font-family: 'EB Garamond', serif;
+    font-size: clamp(2.4rem, 3.8vw, 3.4rem);
+    font-weight: 500; color: #fff;
+    line-height: 1.2; letter-spacing: 0.01em;
+    margin-bottom: 0.7rem;
+  }
+  .hero-title {
+    font-size: 0.93rem; color: rgba(255,255,255,0.78);
+    font-weight: 300; margin-bottom: 0.3rem;
+  }
+  .hero-affiliation {
+    font-family: 'Inconsolata', monospace;
+    font-size: 0.76rem; color: #7eb8d4;
+    letter-spacing: 0.04em; margin-bottom: 2.5rem;
+  }
+  .hero-divider {
+    width: 32px; height: 1px;
+    background: rgba(255,255,255,0.22); margin-bottom: 2rem;
+  }
+  .hero-bio {
+    font-size: 0.92rem; color: rgba(255,255,255,0.72);
+    max-width: 460px; line-height: 1.9; font-weight: 300;
+    margin-bottom: 2.5rem;
+  }
+  .hero-ctas { display: flex; gap: 0.8rem; flex-wrap: wrap; }
+  .btn-primary {
+    display: inline-flex; align-items: center;
+    background: var(--accent); color: #fff;
+    padding: 0.62rem 1.35rem;
+    font-size: 0.76rem; letter-spacing: 0.07em; text-transform: uppercase;
+    font-weight: 700; text-decoration: none;
+    transition: background 0.2s;
+  }
+  .btn-primary:hover { background: var(--accent-dim); }
+  .btn-outline {
+    display: inline-flex; align-items: center;
+    border: 1px solid rgba(255,255,255,0.28); color: rgba(255,255,255,0.75);
+    padding: 0.62rem 1.35rem;
+    font-size: 0.76rem; letter-spacing: 0.07em; text-transform: uppercase;
+    font-weight: 400; text-decoration: none;
+    transition: border-color 0.2s, color 0.2s;
+  }
+  .btn-outline:hover { border-color: rgba(255,255,255,0.45); color: rgba(255,255,255,0.82); }
+  .hero-photo {
+    display: flex; align-items: flex-end; justify-content: center;
+    padding: 5rem 3rem 0;
+  }
+  .photo-wrap { width: min(320px, 88%); position: relative; }
+  .photo-wrap img {
+    width: 100%; display: block;
+    filter: grayscale(20%) contrast(1.03);
+    object-fit: cover; aspect-ratio: 3/4; object-position: top;
+  }
+  .photo-stats {
+    position: absolute; bottom: 0; right: -1rem;
+    background: var(--slate-mid);
+    border-left: 2px solid var(--accent);
+    padding: 1.1rem 1.3rem;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 0.9rem 1.2rem;
+  }
+  .stat-num {
+    font-family: 'EB Garamond', serif;
+    font-size: 1.45rem; font-weight: 500;
+    color: rgba(255,255,255,0.88); line-height: 1;
+  }
+  .stat-label {
+    font-family: 'Inconsolata', monospace;
+    font-size: 0.58rem; letter-spacing: 0.07em; text-transform: uppercase;
+    color: rgba(255,255,255,0.38); margin-top: 3px;
+  }
+
+  /* COMMON */
+  section { padding: var(--section-pad); }
+  .container { max-width: 1060px; margin: 0 auto; padding: 0 2.5rem; }
+  .section-header { margin-bottom: 2.75rem; }
+  .section-tag {
+    font-family: 'Inconsolata', monospace;
+    font-size: 0.71rem; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 0.55rem;
+  }
+  h2.section-title {
+    font-family: 'EB Garamond', serif;
+    font-size: clamp(1.65rem, 2.6vw, 2.2rem);
+    font-weight: 500; color: var(--slate); line-height: 1.25; letter-spacing: 0.01em;
+  }
+
+  /* RESEARCH */
+  .research-section { background: var(--white); }
+  .research-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    border: 1px solid var(--border);
+  }
+  .research-card {
+    padding: 1.6rem 1.5rem;
+    border-right: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    transition: background 0.2s;
+  }
+  .research-card:nth-child(3n) { border-right: none; }
+  .research-card:nth-last-child(-n+3) { border-bottom: none; }
+  .research-card:hover { background: var(--off-white); }
+  .research-num {
+    font-family: 'Inconsolata', monospace;
+    font-size: 0.66rem; color: var(--accent); margin-bottom: 0.85rem;
+  }
+  .research-card h3 {
+    font-family: 'EB Garamond', serif;
+    font-size: 1.02rem; font-weight: 500;
+    color: var(--slate); margin-bottom: 0.55rem; line-height: 1.35;
+  }
+  .research-card p { font-size: 0.86rem; color: var(--text-muted); line-height: 1.7; font-weight: 300; }
+
+  /* PUBLICATIONS */
+  .publications-section { background: var(--off-white); }
+  .pub-filters {
+    display: flex; width: fit-content;
+    border: 1px solid var(--border); margin-bottom: 2.25rem;
+  }
+  .pub-filter {
+    font-family: 'Inconsolata', monospace;
+    font-size: 0.71rem; letter-spacing: 0.06em; text-transform: uppercase;
+    padding: 0.5rem 1.1rem;
+    border: none; border-right: 1px solid var(--border);
+    background: var(--white); cursor: pointer; color: var(--text-muted);
+    transition: background 0.15s, color 0.15s;
+  }
+  .pub-filter:last-child { border-right: none; }
+  .pub-filter.active { background: var(--slate); color: rgba(255,255,255,0.82); }
+  .pub-filter:not(.active):hover { background: var(--cream); }
+  .pub-list { display: flex; flex-direction: column; }
+  .pub-item {
+    padding: 1.4rem 0;
+    border-bottom: 1px solid var(--border);
+    display: grid; grid-template-columns: 46px 1fr; gap: 1.2rem;
+  }
+  .pub-item:first-child { border-top: 1px solid var(--border); }
+  .pub-item.hidden { display: none; }
+  .pub-year {
+    font-family: 'Inconsolata', monospace;
+    font-size: 0.74rem; color: var(--accent); font-weight: 500; padding-top: 0.1rem;
+  }
+  .pub-title {
+    font-family: 'EB Garamond', serif;
+    font-size: 1rem; font-weight: 500;
+    color: var(--slate); margin-bottom: 0.28rem; line-height: 1.45;
+  }
+  .pub-title a { color: inherit; text-decoration: none; }
+  .pub-title a:hover { color: var(--accent); text-decoration: underline; }
+  .pub-authors { font-size: 0.84rem; color: var(--text-muted); margin-bottom: 0.28rem; font-style: italic; }
+  .pub-journal {
+    font-family: 'Inconsolata', monospace;
+    font-size: 0.73rem; color: var(--sage); letter-spacing: 0.02em;
+  }
+  .pub-badge {
+    display: inline-block; background: var(--sage); color: #fff;
+    font-family: 'Inconsolata', monospace;
+    font-size: 0.59rem; letter-spacing: 0.06em; text-transform: uppercase;
+    padding: 0.14rem 0.48rem; margin-left: 0.7rem; vertical-align: middle;
+  }
+
+  /* PROJECTS */
+  .projects-section { background: var(--white); }
+  .projects-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 1.1rem; }
+  .project-card {
+    border: 1px solid var(--border);
+    padding: 1.6rem; background: var(--off-white);
+    transition: border-color 0.2s;
+  }
+  .project-card:hover { border-color: var(--accent); }
+  .project-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.7rem; }
+  .project-period { font-family: 'Inconsolata', monospace; font-size: 0.69rem; color: var(--text-light); }
+  .funder-tag {
+    font-family: 'Inconsolata', monospace; font-size: 0.61rem; letter-spacing: 0.04em; text-transform: uppercase;
+    background: var(--cream); color: var(--text-muted);
+    padding: 0.13rem 0.48rem; border: 1px solid var(--border-dark);
+  }
+  .project-card h3 {
+    font-family: 'EB Garamond', serif;
+    font-size: 1.02rem; font-weight: 500; color: var(--slate);
+    margin-bottom: 0.6rem; line-height: 1.4;
+  }
+  .project-card p { font-size: 0.86rem; color: var(--text-muted); line-height: 1.7; margin-bottom: 0.9rem; font-weight: 300; }
+  .project-role {
+    font-family: 'Inconsolata', monospace; font-size: 0.68rem; letter-spacing: 0.05em; text-transform: uppercase;
+    color: var(--accent);
+  }
+
+  /* TEACHING */
+  .teaching-section { background: var(--slate); color: #fff; }
+  .teaching-section .section-tag { color: var(--accent-dim); }
+  .teaching-section h2.section-title { color: rgba(255,255,255,0.88); }
+  .teaching-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 2.5rem; }
+  .teaching-group { border-top: 1px solid rgba(255,255,255,0.1); padding-top: 1.2rem; }
+  .teaching-institution {
+    font-family: 'Inconsolata', monospace;
+    font-size: 0.72rem; letter-spacing: 0.06em; text-transform: uppercase;
+    color: var(--accent-dim); margin-bottom: 0.9rem;
+  }
+  .course-list { list-style: none; }
+  .course-item {
+    display: flex; align-items: baseline; gap: 0.8rem;
+    padding: 0.5rem 0; border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .course-level {
+    font-family: 'Inconsolata', monospace; font-size: 0.61rem; letter-spacing: 0.04em; text-transform: uppercase;
+    color: rgba(255,255,255,0.26); min-width: 38px;
+  }
+  .course-name { font-size: 0.88rem; color: rgba(255,255,255,0.68); font-weight: 300; }
+
+  /* AWARDS */
+  .awards-section { background: var(--off-white); }
+  .awards-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 0 4rem; }
+  .awards-timeline { padding-left: 1rem; position: relative; }
+  .awards-timeline::before {
+    content: ''; position: absolute; left: 0; top: 4px; bottom: 0;
+    width: 1px; background: var(--border-dark);
+  }
+  .award-item { position: relative; margin-bottom: 1.5rem; padding-left: 1.35rem; }
+  .award-item::before {
+    content: ''; position: absolute; left: -0.26rem; top: 0.47rem;
+    width: 6px; height: 6px; border: 1px solid var(--accent);
+    background: var(--off-white); border-radius: 50%;
+  }
+  .award-year-tag { font-family: 'Inconsolata', monospace; font-size: 0.68rem; color: var(--accent); margin-bottom: 0.12rem; }
+  .award-title { font-family: 'EB Garamond', serif; font-size: 0.98rem; font-weight: 500; color: var(--slate); margin-bottom: 0.18rem; }
+  .award-desc { font-size: 0.84rem; color: var(--text-muted); font-weight: 300; }
+
+  /* CONTACT */
+  .contact-section { background: var(--white); }
+  .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; }
+  .contact-info h3 {
+    font-family: 'EB Garamond', serif; font-size: 1.4rem; color: var(--slate);
+    margin-bottom: 0.85rem; font-weight: 500;
+  }
+  .contact-info p { font-size: 0.88rem; color: var(--text-muted); margin-bottom: 1.75rem; line-height: 1.85; font-weight: 300; }
+  .contact-item { display: flex; align-items: flex-start; gap: 0.85rem; padding: 0.85rem 0; border-bottom: 1px solid var(--border); }
+  .contact-icon {
+    width: 30px; height: 30px; flex-shrink: 0; background: var(--slate);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.82rem; color: rgba(255,255,255,0.65); margin-top: 2px;
+  }
+  .contact-detail-label {
+    font-family: 'Inconsolata', monospace; font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.07em;
+    color: var(--text-light);
+  }
+  .contact-detail-value { font-size: 0.88rem; color: var(--text); margin-top: 2px; font-weight: 300; }
+  .contact-detail-value a { color: var(--accent); text-decoration: none; }
+  .contact-detail-value a:hover { text-decoration: underline; }
+  .skills-block { margin-top: 2.5rem; }
+  .skills-block h4 {
+    font-family: 'Inconsolata', monospace; font-size: 0.7rem; letter-spacing: 0.09em; text-transform: uppercase;
+    color: var(--text-light); margin-bottom: 0.75rem;
+  }
+  .skill-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+  .skill-tag {
+    font-family: 'Inconsolata', monospace; font-size: 0.7rem;
+    padding: 0.26rem 0.65rem; border: 1px solid var(--border);
+    color: var(--text-muted); background: var(--off-white);
+  }
+  .profile-link {
+    display: inline-flex; align-items: center; gap: 0.7rem;
+    text-decoration: none; color: var(--text);
+    font-size: 0.88rem; font-weight: 300;
+    transition: color 0.2s;
+  }
+  .profile-link:hover { color: var(--accent); }
+  .profile-icon {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 30px; height: 30px; flex-shrink: 0;
+    background: var(--cream); border: 1px solid var(--border);
+    font-family: 'Inconsolata', monospace;
+    font-size: 0.62rem; font-weight: 500; letter-spacing: 0.04em;
+    color: var(--text-muted);
+  }
+
+  /* FOOTER */
+  footer { background: var(--slate); padding: 2rem; text-align: center; }
+  .footer-name { font-family: 'EB Garamond', serif; font-size: 1rem; color: rgba(255,255,255,0.65); margin-bottom: 0.35rem; }
+  footer p { font-family: 'Inconsolata', monospace; font-size: 0.67rem; color: rgba(255,255,255,0.26); letter-spacing: 0.05em; }
+
+  /* REVEAL */
+  .reveal { opacity: 0; transform: translateY(16px); transition: opacity 0.58s ease, transform 0.58s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* RESPONSIVE */
+  @media (max-width: 880px) {
+    .hero { grid-template-columns: 1fr; }
+    .hero-photo { display: none; }
+    .hero-text { padding: 7rem 2rem 4rem; }
+    .research-grid { grid-template-columns: 1fr 1fr; }
+    .projects-grid { grid-template-columns: 1fr; }
+    .teaching-grid { grid-template-columns: 1fr; }
+    .contact-grid { grid-template-columns: 1fr; gap: 2rem; }
+    .awards-cols { grid-template-columns: 1fr; }
+    .nav-links { display: none; }
+  }
+  @media (max-width: 560px) {
+    .research-grid { grid-template-columns: 1fr; }
+    .pub-filters { flex-wrap: wrap; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="#" class="nav-brand">Franco Quezada</a>
+  <ul class="nav-links">
+    <li><a href="#research">Research</a></li>
+    <li><a href="#publications">Publications</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#teaching">Teaching</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-text">
+    <div class="hero-eyebrow">Operations Research · Stochastic Programming</div>
+    <h1 class="hero-name">Franco Antonio<br>Quezada Valenzuela</h1>
+    <div class="hero-title">Assistant Professor &amp; Research Associate</div>
+    <div class="hero-affiliation">Universidad de Santiago de Chile · Faculty of Engineering</div>
+    <div class="hero-divider"></div>
+    <p class="hero-bio">
+      My research focuses on developing exact optimization methods for production planning, energy systems, and circular economy problems under uncertainty, combining stochastic programming with combinatorial optimization.
+    </p>
+    <div class="hero-ctas">
+      <a href="#publications" class="btn-primary">Publications →</a>
+      <a href="assets/CV_QuezadaFranco.pdf" class="btn-outline" target="_blank">Download CV</a>
+      <a href="#contact" class="btn-outline">Contact</a>
+    </div>
+  </div>
+  <div class="hero-photo">
+    <div class="photo-wrap">
+      <img src="assets/img/profile.jpg" alt="Franco Quezada" onerror="this.parentElement.style.display='none'">
+      <div class="photo-stats">
+        <div class="stat-item"><div class="stat-num">9+</div><div class="stat-label">WoS Papers</div></div>
+        <div class="stat-item"><div class="stat-num">6</div><div class="stat-label">Projects</div></div>
+        <div class="stat-item"><div class="stat-num">6</div><div class="stat-label">Courses</div></div>
+        <div class="stat-item"><div class="stat-num">3</div><div class="stat-label">Languages</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RESEARCH -->
+<section class="research-section" id="research">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="section-tag">Focus Areas</div>
+      <h2 class="section-title">Research Interests</h2>
+    </div>
+    <div class="research-grid reveal">
+      <div class="research-card"><div class="research-num">01</div><h3>Stochastic Programming</h3><p>Multi-stage stochastic integer programming, SDDIP algorithms, and risk-averse models for production planning and inventory management under uncertainty.</p></div>
+      <div class="research-card"><div class="research-num">02</div><h3>Circular Economy &amp; Remanufacturing</h3><p>Lot-sizing models with returns and remanufacturing, extended producer responsibility, and sustainable supply chain design under uncertainty.</p></div>
+      <div class="research-card"><div class="research-num">03</div><h3>Sustainable Energy Systems</h3><p>Stochastic optimization for local energy markets, peer-to-peer energy trading, and collective self-consumption with renewable energy integration.</p></div>
+      <div class="research-card"><div class="research-num">04</div><h3>Operations Research</h3><p>Combinatorial optimization, Benders decomposition, polyhedral approaches, and exact methods for scheduling, routing, and districting problems.</p></div>
+      <div class="research-card"><div class="research-num">05</div><h3>Healthcare Operations</h3><p>Multi-appointment scheduling for oncology patients, healthcare districting, and resource allocation optimization in medical service delivery.</p></div>
+      <div class="research-card"><div class="research-num">06</div><h3>Environmental Optimization</h3><p>Stochastic programming for firebreak placement, recyclable solid waste collection network design, and environmental risk management.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- PUBLICATIONS -->
+<section class="publications-section" id="publications">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="section-tag">Peer-Reviewed Work</div>
+      <h2 class="section-title">Publications</h2>
+    </div>
+    <div class="pub-filters reveal">
+      <button class="pub-filter active" onclick="filterPubs('all',this)">All</button>
+      <button class="pub-filter" onclick="filterPubs('journal',this)">Journal Articles</button>
+      <button class="pub-filter" onclick="filterPubs('conference',this)">Conference Papers</button>
+      <button class="pub-filter" onclick="filterPubs('submitted',this)">Submitted</button>
+    </div>
+    <div class="pub-list reveal">
+      <div class="pub-item" data-type="journal"><div class="pub-year">2026</div><div><div class="pub-title"><a href="https://doi.org/10.1016/j.cie.2026.112019" target="_blank">Design of a closed-loop Supply Chain for the Production and Composting of Polylactic Acid (PLA): a multi-objective stochastic programming approach</a></div><div class="pub-authors">Ignacio Silva, Andrea Espinoza, Franco Quezada</div><div class="pub-journal">Computers &amp; Industrial Engineering</div></div></div>
+      <div class="pub-item" data-type="journal"><div class="pub-year">2025</div><div><div class="pub-title"><a href="https://doi.org/10.1016/j.segan.2025.101931" target="_blank">User-centered decentralized P2P energy trading model for managing line congestion in Energy Communities</a></div><div class="pub-authors">Sebastian San Martin, Fernando Garcia, Franco Quezada, Sebastian Davila-Galvez</div><div class="pub-journal">Sustainable Energy, Grids and Networks</div></div></div>
+      <div class="pub-item" data-type="journal"><div class="pub-year">2025</div><div><div class="pub-title"><a href="https://doi.org/10.1080/00207543.2025.2467878" target="_blank">A comparative analysis of different carbon cap policies on the economic lot-sizing problem with remanufacturing</a></div><div class="pub-authors">Andres Vallecilla, Sebastian Dávila, Franco Quezada</div><div class="pub-journal">International Journal of Production Research</div></div></div>
+      <div class="pub-item" data-type="journal"><div class="pub-year">2024</div><div><div class="pub-title"><a href="https://doi.org/10.1016/j.cie.2024.109937" target="_blank">The product–mold–machine manufacturing problem: Complexity, MILP models and constructive heuristics</a></div><div class="pub-authors">Nelson Troncoso, Pedro Piñeyro, Héctor Cancela, Franco Quezada, Oscar Vásquez</div><div class="pub-journal">Computers &amp; Industrial Engineering</div></div></div>
+      <div class="pub-item" data-type="journal"><div class="pub-year">2023</div><div><div class="pub-title"><a href="https://doi.org/10.1016/j.apenergy.2022.120226" target="_blank">A Benders decomposition approach for solving a two-stage local energy market problem under uncertainty</a></div><div class="pub-authors">Fernando Garcia, Sebastian Dávila, Franco Quezada</div><div class="pub-journal">Applied Energy</div></div></div>
+      <div class="pub-item" data-type="journal"><div class="pub-year">2022</div><div><div class="pub-title"><a href="https://doi.org/10.1080/00207543.2022.2120924" target="_blank">A stochastic dual dynamic integer programming based approach for remanufacturing planning under uncertainty</a></div><div class="pub-authors">Franco Quezada, Céline Gicquel, Safia Kedad-Sidhoum</div><div class="pub-journal">International Journal of Production Research</div></div></div>
+      <div class="pub-item" data-type="journal"><div class="pub-year">2022</div><div><div class="pub-title"><a href="https://doi.org/10.1287/ijoc.2021.1118" target="_blank">Combining polyhedral approaches and stochastic dual dynamic integer programming for solving the uncapacitated lot-sizing problem under uncertainty</a></div><div class="pub-authors">Franco Quezada, Céline Gicquel, Safia Kedad-Sidhoum</div><div class="pub-journal">INFORMS Journal on Computing</div></div></div>
+      <div class="pub-item" data-type="journal"><div class="pub-year">2021</div><div><div class="pub-title"><a href="https://doi.org/10.1016/j.eswa.2021.114918" target="_blank">The balanced dispatching problem in passengers transport services on demand</a></div><div class="pub-authors">Javier Moraga-Correa, Franco Quezada, Luis Rojo-González, Oscar C. Vásquez</div><div class="pub-journal">Expert Systems with Applications</div></div></div>
+      <div class="pub-item" data-type="journal"><div class="pub-year">2020</div><div><div class="pub-title"><a href="https://doi.org/10.1016/j.cor.2019.104865" target="_blank">A multi-stage stochastic integer programming approach for a multi-echelon lot-sizing problem with returns and lost sales</a></div><div class="pub-authors">Franco Quezada, Céline Gicquel, Safia Kedad-Sidhoum, Quan Vu</div><div class="pub-journal">Computers &amp; Operations Research</div></div></div>
+      <div class="pub-item" data-type="journal"><div class="pub-year">2019</div><div><div class="pub-title"><a href="https://doi.org/10.1016/j.apm.2019.05.007" target="_blank">Minimizing the number of machines with limited workload capacity for scheduling jobs with interval constraints</a></div><div class="pub-authors">Luis Osorio-Valenzuela, Jordi Pereira, Franco Quezada, Oscar C. Vásquez</div><div class="pub-journal">Applied Mathematical Modelling</div></div></div>
+      <div class="pub-item" data-type="conference"><div class="pub-year">2024</div><div><div class="pub-title"><a href="https://doi.org/10.1007/978-3-031-71629-4_24" target="_blank">A two-stage stochastic programming approach for energy-oriented lot-sizing</a></div><div class="pub-authors">Ruiwen Liao, Franco Quezada, Céline Gicquel, Safia Kedad-Sidhoum</div><div class="pub-journal">IFIP APMS 2024 · Springer</div></div></div>
+      <div class="pub-item" data-type="conference"><div class="pub-year">2024</div><div><div class="pub-title"><a href="https://doi.org/10.1109/CoDIT62066.2024.10708607" target="_blank">Online Multi-appointment Scheduling under Demand for Oncology Patient Treatment</a></div><div class="pub-authors">Fredes M., Davila S., Quezada F.</div><div class="pub-journal">CoDIT 2024 · Valletta, Malta</div></div></div>
+      <div class="pub-item" data-type="conference"><div class="pub-year">2024</div><div><div class="pub-title"><a href="https://doi.org/10.5220/0012410100003639" target="_blank">Balancing Resources and Demand: a Bi-Objective Mixed-Integer Programming Approach of Healthcare Districts in Chile</a></div><div class="pub-authors">Castillo P., Bucarey V., Davila S., Quezada F.</div><div class="pub-journal">ICORES 2024 · Rome, Italy · SciTePress</div></div></div>
+      <div class="pub-item" data-type="conference"><div class="pub-year">2023</div><div><div class="pub-title">Design of a closed-loop Supply Chain for the Production and Composting of Polylactic Acid (PLA) based on Organic Matter</div><div class="pub-authors">Ignacio Silva, Andres Vallecilla, Andrea Espinoza, Franco Quezada</div><div class="pub-journal">50th International Conference on Computers &amp; Industrial Engineering · Sharjah-Dubai, UAE</div></div></div>
+      <div class="pub-item" data-type="conference"><div class="pub-year">2023</div><div><div class="pub-title"><a href="https://doi.org/10.1007/978-3-031-43612-3_32" target="_blank">Multi-product lot-sizing problem with remanufacturing, lost sales and sequence-dependent changeover cost</a></div><div class="pub-authors">Lucas Gana, Sebastián Dávila, Franco Quezada</div><div class="pub-journal">ICCL 2023 · Berlin · Lecture Notes in Computer Science</div></div></div>
+      <div class="pub-item" data-type="conference"><div class="pub-year">2022</div><div><div class="pub-title"><a href="https://doi.org/10.1016/j.ifacol.2022.09.522" target="_blank">The Product-Mold-Machine Manufacturing Problem</a></div><div class="pub-authors">Pedro Piñeyro, Héctor Cancela, Nelson Troncoso, Franco Quezada, Oscar Vásquez</div><div class="pub-journal">IFAC MIM 2022 · Nantes, France</div></div></div>
+      <div class="pub-item" data-type="conference"><div class="pub-year">2021</div><div><div class="pub-title"><a href="https://doi.org/10.1007/978-3-030-87672-2_13" target="_blank">New valid inequalities for a multi-echelon lot-sizing problem with returns and lost sales</a></div><div class="pub-authors">Franco Quezada, Céline Gicquel, Safia Kedad-Sidhoum</div><div class="pub-journal">ICCL 2021 · Enschede · Lecture Notes in Computer Science</div></div></div>
+      <div class="pub-item" data-type="conference"><div class="pub-year">2021</div><div><div class="pub-title"><a href="https://doi.org/10.1007/978-3-030-85902-2_71" target="_blank">A partial nested decomposition approach for remanufacturing planning under uncertainty</a></div><div class="pub-authors">Franco Quezada, Céline Gicquel, Safia Kedad-Sidhoum</div><div class="pub-journal">IFIP APMS 2021 · Nantes, France · Springer</div></div></div>
+      <div class="pub-item" data-type="conference"><div class="pub-year">2019</div><div><div class="pub-title"><a href="https://doi.org/10.1109/CoDIT.2019.8820709" target="_blank">Stochastic Dual Dynamic integer Programming for a multi-echelon lot-sizing problem with remanufacturing and lost sales</a></div><div class="pub-authors">Franco Quezada, Céline Gicquel, Safia Kedad-Sidhoum</div><div class="pub-journal">CODIT 2019 · Paris <span class="pub-badge">Best Paper Award</span></div></div></div>
+      <div class="pub-item" data-type="conference"><div class="pub-year">2019</div><div><div class="pub-title"><a href="https://doi.org/10.1609/icaps.v29i1.3498" target="_blank">A Stochastic Dual Dynamic Integer Programming for the Uncapacitated Lot-Sizing Problem with Uncertain Demand and Costs</a></div><div class="pub-authors">Franco Quezada, Céline Gicquel, Safia Kedad-Sidhoum</div><div class="pub-journal">ICAPS 2019 · Proceedings Vol. 29</div></div></div>
+      <div class="pub-item" data-type="conference"><div class="pub-year">2019</div><div><div class="pub-title"><a href="https://doi.org/10.1109/CoDIT.2019.8820394" target="_blank">The Actions Scheduling Problem for Innovation Capabilities Improvement</a></div><div class="pub-authors">Franco Quezada, Oscar C. Vásquez, Luis Rojo-González</div><div class="pub-journal">CODIT 2019 · Paris, France</div></div></div>
+      <div class="pub-item" data-type="conference"><div class="pub-year">2018</div><div><div class="pub-title"><a href="https://doi.org/10.1016/j.endm.2018.07.038" target="_blank">The knapsack problem with scheduled items</a></div><div class="pub-authors">Fabián Díaz-Núñez, Franco Quezada, Oscar C. Vásquez</div><div class="pub-journal">Electronic Notes in Discrete Mathematics, 69: 293–300</div></div></div>
+      <div class="pub-item" data-type="conference"><div class="pub-year">2018</div><div><div class="pub-title"><a href="https://doi.org/10.1007/978-3-030-00898-7_25" target="_blank">The Balanced Dispatching Problem in Passengers Transport Services on Demand</a></div><div class="pub-authors">Patricio J. Araya-Córdova, Fabián Díaz-Núñez, Javier Moraga, Franco Quezada, Luis Rojo-González, Oscar C. Vásquez</div><div class="pub-journal">ICCL 2018 · Salerno, Italy · Lecture Notes in Computer Science</div></div></div>
+      <div class="pub-item" data-type="conference"><div class="pub-year">2015</div><div><div class="pub-title"><a href="https://doi.org/10.1007/978-3-319-18167-7_28" target="_blank">Exploring a resolution method based on an evolutionary game-theoretical model for minimizing the machines with limited workload capacity and interval constraints</a></div><div class="pub-authors">Oscar C. Vásquez, Luis Osorio-Valenzuela, Franco A. Quezada</div><div class="pub-journal">MCO 2015 · Metz, France · Springer</div></div></div>
+      <div class="pub-item" data-type="submitted"><div class="pub-year">2026</div><div><div class="pub-title">Exact solution method for the two-level healthcare districting problem: balancing primary and secondary resource allocation</div><div class="pub-authors">Paulette Castillo, Elloumi Sourour, Franco Quezada, Victor Bucaray, Sebastian Dávila</div><div class="pub-journal">Under review · 2026</div></div></div>
+      <div class="pub-item" data-type="submitted"><div class="pub-year">2026</div><div><div class="pub-title">The Probing Newsvendor: Joint Inventory and Information Decisions</div><div class="pub-authors">Bernardo Pagnoncelli, Franco Quezada, Céline Gicquel, Safia Kedad-Sidhoum</div><div class="pub-journal">Under review · 2026</div></div></div>
+      <div class="pub-item" data-type="submitted"><div class="pub-year">2026</div><div><div class="pub-title">Minimizing delay for online multi-appointment scheduling problem: an application to oncology care</div><div class="pub-authors">Macarena Fredes, Sebastián Dávila-Gálvez, Safia Kedad-Sidhoum, Franco Quezada</div><div class="pub-journal">Under review · 2026</div></div></div>
+      <div class="pub-item" data-type="submitted"><div class="pub-year">2026</div><div><div class="pub-title">An exact branch-and-SDDP algorithm for a multi-stage stochastic energy-aware lot-sizing problem</div><div class="pub-authors">Ruiwen Liao, Franco Quezada, Céline Gicquel, Safia Kedad-Sidhoum</div><div class="pub-journal">Under review · 2026</div></div></div>
+      <div class="pub-item" data-type="submitted"><div class="pub-year">2026</div><div><div class="pub-title">A two-stage stochastic programming model for firebreak placement with solution-dependent downstream protection value</div><div class="pub-authors">Matias Medalla, Jaime Carrasco, Sebastián Dávila-Gálvez, Franco Quezada</div><div class="pub-journal">Under review · 2026</div></div></div>
+      <div class="pub-item" data-type="submitted"><div class="pub-year">2025</div><div><div class="pub-title">Joint lot-sizing and energy supply problem under renewable energy uncertainty</div><div class="pub-authors">Ruiwen Liao, Franco Quezada, Céline Gicquel, Safia Kedad-Sidhoum</div><div class="pub-journal">Under review · 2025</div></div></div>
+      <div class="pub-item" data-type="submitted"><div class="pub-year">2024</div><div><div class="pub-title">Exact models for the orthogonal delineation of site-specific management zones problem</div><div class="pub-authors">Salvador Vicencio, Franco Quezada, Nestor M. Cid-Garcia, Omar J. Ibarra-Rojas, Yasmin A. Rios-Solis</div><div class="pub-journal">Under review · 2024</div></div></div>
+      <div class="pub-item" data-type="submitted"><div class="pub-year">2024</div><div><div class="pub-title">A two-stage stochastic programming approach incorporating spatially-explicit fire scenarios for optimal firebreak placement</div><div class="pub-authors">Matías Vilches, Jaime Carrasco, Sebastián Dávila-Gálvez, David Palacios, Franco Quezada, Andrés Weintraub</div><div class="pub-journal">Second Round · 2024</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section class="projects-section" id="projects">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="section-tag">Funded Research</div>
+      <h2 class="section-title">Research Projects</h2>
+    </div>
+    <div class="projects-grid">
+      <div class="project-card reveal"><div class="project-header"><div class="project-period">2025 – 2026</div><span class="funder-tag">STIC-AmSud</span></div><h3>Sustainable, Efficient and Equitable Energy Planning for Industrial and Residential Systems</h3><p>International cooperation between USACH (Chile), UdelaR (Uruguay), and ENSTA-CNAM (France). Stochastic optimization for integrated energy planning.</p><div class="project-role">International &amp; National Coordinator</div></div>
+      <div class="project-card reveal"><div class="project-header"><div class="project-period">2024 – 2027</div><span class="funder-tag">ECOS-ANID</span></div><h3>Stochastic Programming for Planning with Remanufacturing under Extended Producer Responsibility</h3><p>Collaboration between USACH and the Conservatoire National des Arts et Métiers (CNAM) on sustainability-oriented production planning.</p><div class="project-role">Co-Investigator</div></div>
+      <div class="project-card reveal"><div class="project-header"><div class="project-period">2024 – 2025</div><span class="funder-tag">PGMO</span></div><h3>Modeling Risk Aversion in Multi-Stage Stochastic Lot-Sizing Problems</h3><p>Gaspard Monge Program for Optimization and Operations Research. Risk-averse formulations and solution algorithms for stochastic lot-sizing.</p><div class="project-role">Co-Investigator</div></div>
+      <div class="project-card reveal"><div class="project-header"><div class="project-period">2022 – 2024</div><span class="funder-tag">DICYT</span></div><h3>Production Planning for Remanufactured Products under Uncertainty</h3><p>USACH internal research funding. Exact optimization methods for production planning integrating remanufacturing under stochastic demand.</p><div class="project-role">Principal Investigator</div></div>
+      <div class="project-card reveal"><div class="project-header"><div class="project-period">2023 – 2024</div><span class="funder-tag">VIME</span></div><h3>Design of a Recyclable Solid Waste Collection Network for Estación Central</h3><p>Applied collaboration with the Municipality of Estación Central to design an optimized collection network for recyclable solid waste management.</p><div class="project-role">Co-Investigator</div></div>
+
+      <div class="project-card reveal"><div class="project-header"><div class="project-period">2026 – 2029</div><span class="funder-tag">FONDECYT</span></div><h3>Decision-dependent uncertainty in stochastic programming: extensions and applications of probing-enhanced approach</h3><p>ANID FONDECYT Iniciación. Development of new stochastic programming models and exact algorithms incorporating decision-dependent uncertainty via probing-enhanced approaches.</p><div class="project-role">Principal Investigator</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- TEACHING -->
+<section class="teaching-section" id="teaching">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="section-tag">Academic Instruction</div>
+      <h2 class="section-title">Teaching &amp; Education</h2>
+    </div>
+    <div class="teaching-grid reveal">
+      <div>
+        <div class="teaching-group">
+          <div class="teaching-institution">Universidad de Santiago de Chile — 2022 to present</div>
+          <ul class="course-list">
+            <li class="course-item"><span class="course-level">Grad</span><span class="course-name">Stochastic Programming</span></li>
+            <li class="course-item"><span class="course-level">Grad</span><span class="course-name">Mathematical Programming</span></li>
+            <li class="course-item"><span class="course-level">UG</span><span class="course-name">Operations Research</span></li>
+            <li class="course-item"><span class="course-level">UG</span><span class="course-name">Optimization I</span></li>
+            <li class="course-item"><span class="course-level">UG</span><span class="course-name">Optimization II</span></li>
+            <li class="course-item"><span class="course-level">UG</span><span class="course-name">Operations Management</span></li>
+          </ul>
+        </div>
+        <div class="teaching-group" style="margin-top:2rem;">
+          <div class="teaching-institution">Sorbonne Université — 2020</div>
+          <ul class="course-list">
+            <li class="course-item"><span class="course-level">UG</span><span class="course-name">Data Structures (Teaching Assistant)</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="teaching-group">
+        <div class="teaching-institution">Academic Background</div>
+        <ul class="course-list">
+          <li class="course-item"><span class="course-level">Post-D</span><span class="course-name">E4C Center, ENSTA-Paris · Institut Polytechnique de Paris (2024–2025)</span></li>
+          <li class="course-item"><span class="course-level">PhD</span><span class="course-name">Computer Science · Sorbonne Université, LIP6 (2021)</span></li>
+          <li class="course-item"><span class="course-level">MSc</span><span class="course-name">Applied Mathematics · Université Paris-Saclay (2017)</span></li>
+          <li class="course-item"><span class="course-level">MSc</span><span class="course-name">Industrial Engineering · USACH (2016)</span></li>
+          <li class="course-item"><span class="course-level">BSc</span><span class="course-name">Industrial Engineering · USACH (2014)</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- AWARDS -->
+<section class="awards-section" id="awards">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="section-tag">Recognition</div>
+      <h2 class="section-title">Awards &amp; Scholarships</h2>
+    </div>
+    <div class="awards-cols reveal">
+      <div class="awards-timeline">
+        <div class="award-item"><div class="award-year-tag">2019</div><div class="award-title">Best Paper Award</div><div class="award-desc">International Conference on Control, Decision and Information Technologies (CODIT), Paris, France</div></div>
+        <div class="award-item"><div class="award-year-tag">2019</div><div class="award-title">EURO Travel Sponsorship</div><div class="award-desc">Association of European Operational Research Societies — ELAVIO'19</div></div>
+        <div class="award-item"><div class="award-year-tag">2018 – 2021</div><div class="award-title">Doctoral Scholarship</div><div class="award-desc">Paris PhD School in Computer Science (EDITE) &amp; CONICYT Chile</div></div>
+        <div class="award-item"><div class="award-year-tag">2016 – 2017</div><div class="award-title">IDEX Master Scholarship</div><div class="award-desc">Université Paris-Saclay, France</div></div>
+      </div>
+      <div class="awards-timeline">
+        <div class="award-item"><div class="award-year-tag">2016 – 2017</div><div class="award-title">Master Abroad Scholarship</div><div class="award-desc">National Commission of Research and Technology (CONICYT), Chile</div></div>
+        <div class="award-item"><div class="award-year-tag">2016</div><div class="award-title">3rd Place — Undergraduate Ranking</div><div class="award-desc">Among 74 Industrial Engineering graduates, USACH</div></div>
+        <div class="award-item"><div class="award-year-tag">2015</div><div class="award-title">Student International Mobility Program (PMEI)</div><div class="award-desc">Universidad de Santiago de Chile</div></div>
+        <div class="award-item"><div class="award-year-tag">2014</div><div class="award-title">Academic Excellence Engineering Scholarship</div><div class="award-desc">Froemel Foundation &amp; Universidad de Santiago de Chile</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact-section" id="contact">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="section-tag">Get In Touch</div>
+      <h2 class="section-title">Contact</h2>
+    </div>
+    <div class="contact-grid reveal">
+      <div class="contact-info">
+        <h3>Research collaborations &amp; inquiries</h3>
+        <p>I welcome research collaborations, academic exchanges, and PhD supervision opportunities in operations research, stochastic programming, and sustainable systems optimization.</p>
+        <div class="contact-item"><div class="contact-icon">✉</div><div><div class="contact-detail-label">Email</div><div class="contact-detail-value"><a href="mailto:franco.quezada@usach.cl">franco.quezada@usach.cl</a></div></div></div>
+        <div class="contact-item"><div class="contact-icon">⌂</div><div><div class="contact-detail-label">Affiliation</div><div class="contact-detail-value"><a href="https://usach.cl" target="_blank">Universidad de Santiago de Chile</a> · <a href="https://www.ingenieriaindustrial-usach.cl/" target="_blank">Industrial Engineering</a></div></div></div>
+        <div class="contact-item"><div class="contact-icon">◈</div><div><div class="contact-detail-label">Research Group</div><div class="contact-detail-value"><a href="https://www.pdsps.usach.cl/" target="_blank">Program for the Development of Sustainable Production Systems (PDSPS)</a></div></div></div>
+
+        <div style="margin-top:2rem;">
+          <div class="contact-detail-label" style="margin-bottom:0.75rem;">Academic Profiles</div>
+          <div style="display:flex; flex-direction:column; gap:0.5rem;">
+            <a href="https://scholar.google.com/citations?user=JKsCIcsAAAAJ&hl=es" target="_blank" class="profile-link">
+              <span class="profile-icon">G</span>
+              <span>Google Scholar</span>
+            </a>
+            <a href="https://orcid.org/0000-0001-5763-5582" target="_blank" class="profile-link">
+              <span class="profile-icon">ID</span>
+              <span>ORCID · 0000-0001-5763-5582</span>
+            </a>
+            <a href="https://dblp.org/pid/172/7807.html" target="_blank" class="profile-link">
+              <span class="profile-icon">DB</span>
+              <span>DBLP</span>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="skills-block"><h4>Programming &amp; Software</h4><div class="skill-tags"><span class="skill-tag">Python</span><span class="skill-tag">C++</span><span class="skill-tag">CPLEX</span><span class="skill-tag">Gurobi</span><span class="skill-tag">GAMS</span><span class="skill-tag">AMPL</span><span class="skill-tag">LaTeX</span></div></div>
+        <div class="skills-block" style="margin-top:1.75rem;"><h4>Languages</h4><div class="skill-tags"><span class="skill-tag">Spanish (Native)</span><span class="skill-tag">English</span><span class="skill-tag">French</span></div></div>
+        <div class="skills-block" style="margin-top:1.75rem;"><h4>Research Keywords</h4><div class="skill-tags"><span class="skill-tag">Stochastic Programming</span><span class="skill-tag">SDDIP</span><span class="skill-tag">Lot-Sizing</span><span class="skill-tag">Remanufacturing</span><span class="skill-tag">Circular Economy</span><span class="skill-tag">Energy Markets</span><span class="skill-tag">MILP</span><span class="skill-tag">Benders Decomposition</span><span class="skill-tag">Multi-stage Optimization</span></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-name">Franco Antonio Quezada Valenzuela</div>
+  <p>Assistant Professor · Universidad de Santiago de Chile · Department of Industrial Engineering</p>
+</footer>
+
+<script>
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+  function filterPubs(type, btn) {
+    document.querySelectorAll('.pub-filter').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('.pub-item').forEach(item => {
+      item.classList.toggle('hidden', type !== 'all' && item.dataset.type !== type);
+    });
+  }
+</script>
+</body>
+</html>
