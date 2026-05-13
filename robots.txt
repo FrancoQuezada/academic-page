@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://francoquezada.github.io/academic-page/sitemap.xml
